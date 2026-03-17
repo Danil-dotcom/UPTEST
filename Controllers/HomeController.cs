@@ -1,32 +1,31 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using UPTEST.Models;
+using Microsoft.EntityFrameworkCore;
+using UPTEST.Data;
 
 namespace UPTEST.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // Статистика для главной страницы
+            ViewBag.OrdersCount = await _context.Orders.CountAsync();
+            ViewBag.ActiveOrdersCount = await _context.Orders
+                .Where(o => o.Status == "В чистке" || o.Status == "Принят")
+                .CountAsync();
+            ViewBag.ReadyOrdersCount = await _context.Orders
+                .Where(o => o.Status == "Готов")
+                .CountAsync();
+            ViewBag.CustomersCount = await _context.Customers.CountAsync();
+
             return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

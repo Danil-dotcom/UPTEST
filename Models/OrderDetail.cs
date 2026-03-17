@@ -34,13 +34,13 @@ namespace UPTEST.Models
 
         [StringLength(200)]
         [Display(Name = "Примечания")]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         // Навигационные свойства
         [ForeignKey("OrderId")]
-        public virtual Order Order { get; set; }
+        public virtual Order? Order { get; set; }
 
         [ForeignKey("ServiceId")]
-        public virtual Service Service { get; set; }
+        public virtual Service? Service { get; set; }
     }
 }

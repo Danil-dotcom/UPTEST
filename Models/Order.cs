@@ -17,7 +17,7 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "Номер заказа обязателен")]
         [StringLength(20)]
         [Display(Name = "Номер заказа")]
-        public string OrderNumber { get; set; }
+        public string? OrderNumber { get; set; }
 
         [Required(ErrorMessage = "Менеджер обязателен")]
         [Display(Name = "Менеджер")]
@@ -29,13 +29,13 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "Имя клиента обязательно")]
         [StringLength(100)]
         [Display(Name = "Имя клиента")]
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
 
         [Required(ErrorMessage = "Телефон клиента обязателен")]
         [StringLength(20)]
         [Phone(ErrorMessage = "Некорректный телефон")]
         [Display(Name = "Телефон клиента")]
-        public string CustomerPhone { get; set; }
+        public string? CustomerPhone { get; set; }
 
         [Required(ErrorMessage = "Категория обязательна")]
         [Display(Name = "Категория")]
@@ -43,11 +43,11 @@ namespace UPTEST.Models
 
         [StringLength(200)]
         [Display(Name = "Описание вещи")]
-        public string ItemDescription { get; set; }
+        public string? ItemDescription { get; set; }
 
         [StringLength(100)]
         [Display(Name = "Тип пятна")]
-        public string StainType { get; set; }
+        public string? StainType { get; set; }
 
         [Range(1, 100, ErrorMessage = "Количество должно быть от 1 до 100")]
         [Display(Name = "Количество")]
@@ -82,7 +82,7 @@ namespace UPTEST.Models
 
         [StringLength(30)]
         [Display(Name = "Метод оплаты")]
-        public string PaymentMethod { get; set; }
+        public string? PaymentMethod { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Дата создания")]
@@ -98,7 +98,7 @@ namespace UPTEST.Models
 
         [StringLength(500)]
         [Display(Name = "Примечания")]
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
 
         [Display(Name = "Кто изменил")]
         public int? LastModifiedBy { get; set; }
@@ -109,18 +109,19 @@ namespace UPTEST.Models
 
         // Навигационные свойства
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         [ForeignKey("CustomerId")]
-        public virtual Customer Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
 
         [ForeignKey("CategoryId")]
-        public virtual ItemCategory Category { get; set; }
+        public virtual ItemCategory? Category { get; set; }
 
         [ForeignKey("LastModifiedBy")]
-        public virtual User ModifiedBy { get; set; }
+        [NotMapped]
+        public virtual User? ModifiedBy { get; set; }
 
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<OrderHistory> OrderHistories { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+        public virtual ICollection<OrderHistory>? OrderHistories { get; set; }
     }
 }

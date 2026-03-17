@@ -17,33 +17,33 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "ФИО обязательно")]
         [StringLength(100, MinimumLength = 5, ErrorMessage = "ФИО должно быть от 5 до 100 символов")]
         [Display(Name = "ФИО")]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         [Required(ErrorMessage = "Email обязателен")]
         [StringLength(100)]
         [EmailAddress(ErrorMessage = "Некорректный Email адрес")]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Required(ErrorMessage = "Пароль обязателен")]
         [StringLength(255)]
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         [Required(ErrorMessage = "Роль обязательна")]
         [Display(Name = "Роль")]
         public int RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        public virtual Role? Role { get; set; }
 
         [StringLength(20)]
         [Phone(ErrorMessage = "Некорректный номер телефона")]
         [Display(Name = "Телефон")]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [StringLength(200)]
         [Display(Name = "Адрес")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Дата регистрации")]
@@ -57,7 +57,7 @@ namespace UPTEST.Models
         public bool IsActive { get; set; } = true;
 
         // Навигационные свойства
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<OrderHistory> OrderHistories { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
+        public virtual ICollection<OrderHistory>? OrderHistories { get; set; }
     }
 }

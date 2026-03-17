@@ -22,17 +22,17 @@ namespace UPTEST.Models
         [Required]
         [StringLength(50)]
         [Display(Name = "Тип действия")]
-        public string ActionType { get; set; } // CREATE, UPDATE, DELETE, STATUS_CHANGE, PAYMENT
+        public string? ActionType { get; set; } // CREATE, UPDATE, DELETE, STATUS_CHANGE, PAYMENT
 
         [StringLength(50)]
         [Display(Name = "Поле")]
-        public string FieldName { get; set; }
+        public string? FieldName { get; set; }
 
         [Display(Name = "Старое значение")]
-        public string OldValue { get; set; }
+        public string? OldValue { get; set; }
 
         [Display(Name = "Новое значение")]
-        public string NewValue { get; set; }
+        public string? NewValue { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
@@ -41,13 +41,13 @@ namespace UPTEST.Models
 
         [StringLength(45)]
         [Display(Name = "IP адрес")]
-        public string IPAddress { get; set; }
+        public string? IPAddress { get; set; }
 
         // Навигационные свойства
         [ForeignKey("OrderId")]
-        public virtual Order Order { get; set; }
+        public virtual Order? Order { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

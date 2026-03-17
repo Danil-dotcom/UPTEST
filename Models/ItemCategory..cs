@@ -16,11 +16,11 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "Название категории обязательно")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Название должно быть от 3 до 50 символов")]
         [Display(Name = "Категория")]
-        public string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
 
         [StringLength(200)]
         [Display(Name = "Описание")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Column(TypeName = "decimal(3, 2)")]
         [Range(0.5, 3.0, ErrorMessage = "Коэффициент должен быть от 0.5 до 3.0")]
@@ -34,6 +34,6 @@ namespace UPTEST.Models
         public bool IsActive { get; set; } = true;
 
         // Навигационное свойство
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }

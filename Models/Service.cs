@@ -16,11 +16,11 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "Название услуги обязательно")]
         [StringLength(100, MinimumLength = 3, ErrorMessage = "Название должно быть от 3 до 100 символов")]
         [Display(Name = "Услуга")]
-        public string ServiceName { get; set; }
+        public string? ServiceName { get; set; }
 
         [StringLength(500)]
         [Display(Name = "Описание")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required(ErrorMessage = "Базовая цена обязательна")]
         [Column(TypeName = "decimal(10, 2)")]
@@ -36,6 +36,6 @@ namespace UPTEST.Models
         public bool IsActive { get; set; } = true;
 
         // Навигационное свойство
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }
