@@ -1,7 +1,9 @@
-﻿@{
+@{
     var currentController = ViewContext.RouteData.Values["Controller"]?.ToString()?.ToLowerInvariant();
     var currentAction = ViewContext.RouteData.Values["Action"]?.ToString()?.ToLowerInvariant();
     var isHomePage = currentController == "home" && currentAction == "index";
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+    var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
 }
 <!DOCTYPE html>
 <html lang="ru">
@@ -28,9 +30,32 @@
                     <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Главная</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Home/Index#services">Услуги</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Home/Index#workspace-tabs">Вкладки</a></li>
                         <li class="nav-item"><a class="nav-link" href="/Home/Index#contact">Контакты</a></li>
                         <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">О проекте</a></li>
-                        <li class="nav-item ms-lg-2"><a class="btn btn-dark nav-cta" href="/Home/Index#contact">Оставить заявку</a></li>
+
+                        @if (isAuthenticated)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Orders" asp-action="Index">Заказы</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Customers" asp-action="Index">Клиенты</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Services" asp-action="Index">Сервисы</a></li>
+                            <li class="nav-item ms-lg-3">
+                                <div class="user-badge">
+                                    <span>@User.Identity?.Name</span>
+                                    <small>@(string.IsNullOrWhiteSpace(userRole) ? "Сотрудник" : userRole)</small>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-dark nav-auth-btn">Выйти</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-lg-2"><a class="btn btn-dark nav-cta" asp-controller="Account" asp-action="Auth">Вход / регистрация</a></li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -56,10 +81,11 @@
         <div class="container site-footer-container">
             <div>
                 <strong>UPTEXTILE</strong>
-                <p class="mb-0">Концепт промо-страницы для прачечного сервиса и корпоративного текстиля.</p>
+                <p class="mb-0">Промо-сайт и рабочий кабинет прачечного сервиса с авторизацией для сотрудников.</p>
             </div>
             <div class="site-footer-links">
                 <a asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
+                <a asp-area="" asp-controller="Account" asp-action="Auth">Кабинет</a>
                 <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </div>

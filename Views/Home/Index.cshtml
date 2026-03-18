@@ -1,5 +1,7 @@
 @{
     ViewData["Title"] = "Промышленная прачечная";
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+    var statusMessage = TempData["StatusMessage"]?.ToString();
 }
 
 <div class="landing-page">
@@ -15,7 +17,14 @@
                 </p>
                 <div class="hero-actions">
                     <a class="btn btn-light hero-btn-primary" href="#contact">Рассчитать стоимость</a>
-                    <a class="btn btn-outline-light hero-btn-secondary" href="#services">Наши услуги</a>
+                    @if (isAuthenticated)
+                    {
+                        <a class="btn btn-outline-light hero-btn-secondary" href="#workspace-tabs">Открыть рабочие вкладки</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-light hero-btn-secondary" asp-controller="Account" asp-action="Auth">Войти в кабинет</a>
+                    }
                 </div>
                 <ul class="hero-metrics list-unstyled mb-0">
                     <li>
@@ -55,6 +64,15 @@
             </div>
         </div>
     </section>
+
+    @if (!string.IsNullOrWhiteSpace(statusMessage))
+    {
+        <section class="flash-section">
+            <div class="section-shell">
+                <div class="alert alert-success shadow-sm border-0 flash-alert mb-0" role="alert">@statusMessage</div>
+            </div>
+        </section>
+    }
 
     <section class="advantages-section">
         <div class="section-shell">
@@ -136,6 +154,136 @@
                         <li>готовность к интенсивной эксплуатации.</li>
                     </ul>
                 </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="workspace-section" id="workspace-tabs">
+        <div class="section-shell">
+            <div class="section-heading centered-heading workspace-heading">
+                <span class="section-kicker">Рабочие вкладки</span>
+                <h2>Основные разделы теперь собраны в понятные вкладки</h2>
+                <p>Добавили табы для быстрого перехода между заказами, клиентами, услугами и командой. Это упрощает навигацию внутри системы.</p>
+            </div>
+
+            <div class="workspace-card">
+                <ul class="nav nav-pills workspace-tabs mb-4" id="workspaceTabNav" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="orders-tab" data-bs-toggle="pill" data-bs-target="#orders-pane" type="button" role="tab" aria-controls="orders-pane" aria-selected="true">Заказы</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="customers-tab" data-bs-toggle="pill" data-bs-target="#customers-pane" type="button" role="tab" aria-controls="customers-pane" aria-selected="false">Клиенты</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="services-tab" data-bs-toggle="pill" data-bs-target="#services-pane" type="button" role="tab" aria-controls="services-pane" aria-selected="false">Услуги</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="team-tab" data-bs-toggle="pill" data-bs-target="#team-pane" type="button" role="tab" aria-controls="team-pane" aria-selected="false">Команда</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content workspace-tab-content">
+                    <div class="tab-pane fade show active" id="orders-pane" role="tabpanel" aria-labelledby="orders-tab" tabindex="0">
+                        <div class="workspace-pane">
+                            <div>
+                                <span class="workspace-metric">@ViewBag.OrdersCount заказов</span>
+                                <h3>Контроль приёма, статусов и сроков выдачи</h3>
+                                <p>Следите за загрузкой цеха, просматривайте активные заказы и быстро переходите к созданию нового заказа.</p>
+                                <ul>
+                                    <li>Активных заказов: <strong>@ViewBag.ActiveOrdersCount</strong></li>
+                                    <li>Готово к выдаче: <strong>@ViewBag.ReadyOrdersCount</strong></li>
+                                </ul>
+                            </div>
+                            <div class="workspace-actions">
+                                @if (isAuthenticated)
+                                {
+                                    <a class="btn btn-dark" asp-controller="Orders" asp-action="Index">Открыть заказы</a>
+                                    <a class="btn btn-outline-dark" asp-controller="Orders" asp-action="Create">Новый заказ</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark" asp-controller="Account" asp-action="Auth">Войти, чтобы работать с заказами</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="customers-pane" role="tabpanel" aria-labelledby="customers-tab" tabindex="0">
+                        <div class="workspace-pane">
+                            <div>
+                                <span class="workspace-metric">@ViewBag.CustomersCount клиентов</span>
+                                <h3>База клиентов с быстрым доступом к контактам</h3>
+                                <p>Во вкладке удобно хранить карточки клиентов, их телефоны, email и историю обращений без лишних переходов.</p>
+                                <ul>
+                                    <li>Отдельный список постоянных клиентов.</li>
+                                    <li>Удобный старт добавления нового контакта.</li>
+                                </ul>
+                            </div>
+                            <div class="workspace-actions">
+                                @if (isAuthenticated)
+                                {
+                                    <a class="btn btn-dark" asp-controller="Customers" asp-action="Index">Открыть клиентов</a>
+                                    <a class="btn btn-outline-dark" asp-controller="Customers" asp-action="Create">Добавить клиента</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark" asp-controller="Account" asp-action="Auth" asp-route-tab="register">Зарегистрироваться для доступа</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="services-pane" role="tabpanel" aria-labelledby="services-tab" tabindex="0">
+                        <div class="workspace-pane">
+                            <div>
+                                <span class="workspace-metric">Каталог услуг</span>
+                                <h3>Управление услугами и базовыми тарифами</h3>
+                                <p>Во вкладке можно поддерживать актуальный перечень услуг, базовые цены и доступность направлений для разных типов текстиля.</p>
+                                <ul>
+                                    <li>Редактирование прайса в одном месте.</li>
+                                    <li>Удобное масштабирование каталога услуг.</li>
+                                </ul>
+                            </div>
+                            <div class="workspace-actions">
+                                @if (isAuthenticated)
+                                {
+                                    <a class="btn btn-dark" asp-controller="Services" asp-action="Index">Открыть услуги</a>
+                                    <a class="btn btn-outline-dark" asp-controller="Services" asp-action="Create">Добавить услугу</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark" asp-controller="Account" asp-action="Auth">Войти в систему</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="team-pane" role="tabpanel" aria-labelledby="team-tab" tabindex="0">
+                        <div class="workspace-pane">
+                            <div>
+                                <span class="workspace-metric">Команда и роли</span>
+                                <h3>Сотрудники регистрируются сами, а роли уже готовы</h3>
+                                <p>После регистрации сотрудник автоматически получает рабочую роль, а администратор может при необходимости управлять ролями в системе.</p>
+                                <ul>
+                                    <li>Безопасный вход по email и паролю.</li>
+                                    <li>Хранение даты регистрации и последнего входа.</li>
+                                </ul>
+                            </div>
+                            <div class="workspace-actions">
+                                @if (isAuthenticated)
+                                {
+                                    <a class="btn btn-dark" asp-controller="Roles" asp-action="Index">Открыть роли</a>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-outline-dark">Выйти из аккаунта</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-dark" asp-controller="Account" asp-action="Auth" asp-route-tab="register">Создать аккаунт</a>
+                                    <a class="btn btn-outline-dark" asp-controller="Account" asp-action="Auth">У меня уже есть доступ</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

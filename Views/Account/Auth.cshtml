@@ -1,0 +1,102 @@
+@model UPTEST.ViewModels.AuthPageViewModel
+@{
+    ViewData["Title"] = "Авторизация";
+    var loginActive = Model.ActiveTab != "register";
+}
+
+<div class="auth-page">
+    <section class="auth-hero">
+        <div>
+            <span class="section-kicker">Личный кабинет</span>
+            <h1>Вход и регистрация сотрудников в одном окне</h1>
+            <p>
+                Подключили безопасную авторизацию и форму регистрации, чтобы сотрудники могли быстро войти в систему,
+                а новые пользователи — создать аккаунт без переходов по отдельным страницам.
+            </p>
+            <ul class="auth-highlights list-unstyled mb-0">
+                <li>Cookie-авторизация для доступа к заказам, клиентам и услугам.</li>
+                <li>Регистрация новых сотрудников с автоматическим назначением роли.</li>
+                <li>Интерфейс, разделённый на вкладки «Вход» и «Регистрация».</li>
+            </ul>
+        </div>
+
+        <div class="auth-card">
+            <ul class="nav nav-pills auth-tabs mb-4" id="authTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(loginActive ? "active" : null)" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-pane" type="button" role="tab" aria-controls="login-pane" aria-selected="@(loginActive.ToString().ToLowerInvariant())">Вход</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link @(!loginActive ? "active" : null)" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-pane" type="button" role="tab" aria-controls="register-pane" aria-selected="@((!loginActive).ToString().ToLowerInvariant())">Регистрация</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade @(loginActive ? "show active" : null)" id="login-pane" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
+                    <form asp-action="Login" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="mb-3">
+                            <label asp-for="Login.Email" class="form-label"></label>
+                            <input asp-for="Login.Email" class="form-control form-control-lg" autocomplete="username" />
+                            <span asp-validation-for="Login.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Login.Password" class="form-label"></label>
+                            <input asp-for="Login.Password" class="form-control form-control-lg" autocomplete="current-password" />
+                            <span asp-validation-for="Login.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input asp-for="Login.RememberMe" class="form-check-input" />
+                            <label asp-for="Login.RememberMe" class="form-check-label"></label>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Войти</button>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade @(!loginActive ? "show active" : null)" id="register-pane" role="tabpanel" aria-labelledby="register-tab" tabindex="0">
+                    <form asp-action="Register" method="post" novalidate>
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="Register.FullName" class="form-label"></label>
+                                <input asp-for="Register.FullName" class="form-control form-control-lg" autocomplete="name" />
+                                <span asp-validation-for="Register.FullName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Register.Email" class="form-label"></label>
+                                <input asp-for="Register.Email" class="form-control form-control-lg" autocomplete="email" />
+                                <span asp-validation-for="Register.Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Register.PhoneNumber" class="form-label"></label>
+                                <input asp-for="Register.PhoneNumber" class="form-control form-control-lg" autocomplete="tel" />
+                                <span asp-validation-for="Register.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Register.Password" class="form-label"></label>
+                                <input asp-for="Register.Password" class="form-control form-control-lg" autocomplete="new-password" />
+                                <span asp-validation-for="Register.Password" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Register.ConfirmPassword" class="form-label"></label>
+                                <input asp-for="Register.ConfirmPassword" class="form-control form-control-lg" autocomplete="new-password" />
+                                <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="Register.Address" class="form-label"></label>
+                                <input asp-for="Register.Address" class="form-control form-control-lg" autocomplete="street-address" />
+                                <span asp-validation-for="Register.Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 mt-4">Создать аккаунт</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
