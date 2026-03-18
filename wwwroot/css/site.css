@@ -551,3 +551,170 @@ img {
     border-radius: 22px;
   }
 }
+
+.nav-auth-btn {
+  border-radius: 999px;
+  padding-inline: 1.1rem;
+}
+
+.user-badge {
+  display: flex;
+  flex-direction: column;
+  padding: 0.55rem 0.9rem;
+  border-radius: 18px;
+  background: rgba(24, 49, 83, 0.08);
+  line-height: 1.1;
+}
+
+.user-badge span {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.user-badge small {
+  color: var(--muted);
+}
+
+.flash-section {
+  padding-top: 1.5rem;
+}
+
+.flash-alert {
+  border-radius: 20px;
+}
+
+.workspace-section,
+.auth-page {
+  padding: 4.5rem 0;
+}
+
+.workspace-heading {
+  margin-bottom: 2rem;
+}
+
+.workspace-card,
+.auth-card {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(20, 33, 61, 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.workspace-tabs,
+.auth-tabs {
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.workspace-tabs .nav-link,
+.auth-tabs .nav-link {
+  border-radius: 999px;
+  padding: 0.8rem 1.2rem;
+  color: var(--primary);
+  background: rgba(24, 49, 83, 0.06);
+  font-weight: 700;
+}
+
+.workspace-tabs .nav-link.active,
+.auth-tabs .nav-link.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.workspace-tab-content,
+.auth-card .tab-content {
+  min-height: 260px;
+}
+
+.workspace-pane {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.workspace-pane h3,
+.auth-hero h1 {
+  margin-bottom: 1rem;
+}
+
+.workspace-pane p,
+.auth-hero p,
+.auth-highlights li {
+  color: var(--muted);
+}
+
+.workspace-pane ul,
+.auth-highlights {
+  padding-left: 1.2rem;
+}
+
+.workspace-metric {
+  display: inline-flex;
+  margin-bottom: 0.85rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.workspace-actions {
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.auth-hero {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
+  gap: 2rem;
+  align-items: start;
+}
+
+.auth-card .form-control {
+  border-radius: 18px;
+  border-color: rgba(20, 33, 61, 0.14);
+}
+
+.auth-card .btn,
+.workspace-actions .btn {
+  border-radius: 999px;
+  padding: 0.9rem 1.2rem;
+  font-weight: 600;
+}
+
+@media (max-width: 991.98px) {
+  .workspace-pane,
+  .auth-hero,
+  .site-footer-container {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .workspace-actions {
+    min-width: 0;
+  }
+
+  .user-badge {
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .workspace-card,
+  .auth-card {
+    padding: 1.15rem;
+  }
+
+  .workspace-tabs .nav-link,
+  .auth-tabs .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}
