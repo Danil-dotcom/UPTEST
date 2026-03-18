@@ -1,8 +1,244 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Промышленная прачечная";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="landing-page">
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="section-shell hero-grid">
+            <div class="hero-copy">
+                <span class="hero-badge">Норд-стиль сервиса для HoReCa и бизнеса</span>
+                <h1>Прачечный сервис, который помогает бренду выглядеть безупречно каждый день</h1>
+                <p>
+                    Забираем, сортируем, дезинфицируем и возвращаем бельё точно в срок.
+                    Работаем с гостиницами, ресторанами, фитнес-клубами, салонами и медицинскими центрами.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-light hero-btn-primary" href="#contact">Рассчитать стоимость</a>
+                    <a class="btn btn-outline-light hero-btn-secondary" href="#services">Наши услуги</a>
+                </div>
+                <ul class="hero-metrics list-unstyled mb-0">
+                    <li>
+                        <strong>24/7</strong>
+                        <span>контроль циклов стирки и логистики</span>
+                    </li>
+                    <li>
+                        <strong>98%</strong>
+                        <span>заказов сдаём в согласованный срок</span>
+                    </li>
+                    <li>
+                        <strong>3000+</strong>
+                        <span>кг белья обрабатываем ежедневно</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="hero-panel">
+                <div class="hero-card glass-card">
+                    <p class="hero-card-label">Почему нас выбирают</p>
+                    <h2>Чистота, скорость и стабильное качество без перегрузки вашей команды</h2>
+                    <div class="hero-card-list">
+                        <div>
+                            <span>01</span>
+                            <p>Европейское оборудование и щадящая химия для белого и цветного текстиля.</p>
+                        </div>
+                        <div>
+                            <span>02</span>
+                            <p>Маркировка партий, понятная отчётность и персональный менеджер.</p>
+                        </div>
+                        <div>
+                            <span>03</span>
+                            <p>Отдельные регламенты для полотенец, постельного белья, униформы и махры.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="advantages-section">
+        <div class="section-shell">
+            <div class="section-heading centered-heading">
+                <span class="section-kicker">Преимущества</span>
+                <h2>Собрали сервис под реальные задачи бизнеса</h2>
+                <p>Сделали акцент на визуальной подаче и структуре, близкой к референсу: большой первый экран, карточки преимуществ и блоки услуг.</p>
+            </div>
+            <div class="advantage-grid">
+                <article class="feature-card">
+                    <div class="feature-icon">✦</div>
+                    <h3>Строгий контроль качества</h3>
+                    <p>Каждая партия проходит осмотр, сортировку и финальную проверку перед отправкой клиенту.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">◌</div>
+                    <h3>Бережная обработка тканей</h3>
+                    <p>Подбираем режимы отдельно для сатина, махры, униформы и деликатного ресторанного текстиля.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">↺</div>
+                    <h3>Регулярный вывоз и доставка</h3>
+                    <p>Формируем удобный график, чтобы бельё возвращалось вовремя даже в сезоны высокой загрузки.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h3>Прозрачные тарифы</h3>
+                    <p>Считаем стоимость по объёму, типу изделий и графику без скрытых доплат.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section" id="services">
+        <div class="section-shell">
+            <div class="section-heading">
+                <span class="section-kicker">Услуги</span>
+                <h2>Решения для разных форматов бизнеса</h2>
+                <p>Блок услуг оформлен карточками с мягкими тенями и светлым фоном, чтобы главная выглядела современно и презентабельно.</p>
+            </div>
+            <div class="service-grid">
+                <article class="service-card service-card-accent">
+                    <span class="service-tag">HoReCa</span>
+                    <h3>Отели и апартаменты</h3>
+                    <p>Стирка постельного белья, махровых изделий, халатов и текстиля для номерного фонда.</p>
+                    <ul>
+                        <li>сортировка по типам ткани;</li>
+                        <li>аккуратное глажение и упаковка;</li>
+                        <li>возврат по графику без срывов.</li>
+                    </ul>
+                </article>
+                <article class="service-card">
+                    <span class="service-tag">Food service</span>
+                    <h3>Рестораны и кейтеринг</h3>
+                    <p>Скатерти, салфетки, униформа, кухонный текстиль и быстрая замена партий в пиковые смены.</p>
+                    <ul>
+                        <li>удаление сложных загрязнений;</li>
+                        <li>обработка белых тканей;</li>
+                        <li>подготовка к сервировке.</li>
+                    </ul>
+                </article>
+                <article class="service-card">
+                    <span class="service-tag">Corporate</span>
+                    <h3>Спецодежда и форма</h3>
+                    <p>Для производств, клининга, салонов и персонала сервисных компаний с учётом норм гигиены.</p>
+                    <ul>
+                        <li>персональная маркировка;</li>
+                        <li>регулярный оборот комплектов;</li>
+                        <li>контроль износа изделий.</li>
+                    </ul>
+                </article>
+                <article class="service-card">
+                    <span class="service-tag">Care</span>
+                    <h3>Медицина, SPA и фитнес</h3>
+                    <p>Полотенца, простыни, халаты и расходный текстиль с усиленным вниманием к чистоте и дезинфекции.</p>
+                    <ul>
+                        <li>подходящие дез-средства;</li>
+                        <li>бережная сушка махры;</li>
+                        <li>готовность к интенсивной эксплуатации.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section">
+        <div class="section-shell process-grid">
+            <div>
+                <div class="section-heading">
+                    <span class="section-kicker">Как работаем</span>
+                    <h2>Подключаемся быстро и без сложного запуска</h2>
+                </div>
+                <div class="timeline">
+                    <article>
+                        <span>1</span>
+                        <div>
+                            <h3>Аудит объёмов</h3>
+                            <p>Уточняем типы изделий, сезонность, частоту вывоза и пожелания к упаковке.</p>
+                        </div>
+                    </article>
+                    <article>
+                        <span>2</span>
+                        <div>
+                            <h3>Тестовая партия</h3>
+                            <p>Показываем качество обработки и согласовываем оптимальные режимы для вашего текстиля.</p>
+                        </div>
+                    </article>
+                    <article>
+                        <span>3</span>
+                        <div>
+                            <h3>Постоянный график</h3>
+                            <p>Запускаем регулярные выезды, отчётность и удобный канал связи с менеджером.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <aside class="pricing-card">
+                <p class="pricing-label">Тарифы</p>
+                <h3>Индивидуальный расчёт под вашу загрузку</h3>
+                <p class="pricing-text">Обычно стоимость зависит от объёма белья, вида изделий, срочности и графика логистики.</p>
+                <div class="pricing-points">
+                    <div><strong>от 48 ₽</strong><span>за кг при регулярном графике</span></div>
+                    <div><strong>1 день</strong><span>на запуск после согласования условий</span></div>
+                    <div><strong>100%</strong><span>закрывающих документов для юрлиц</span></div>
+                </div>
+                <a class="btn btn-dark w-100" href="#contact">Получить предложение</a>
+            </aside>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="section-shell about-grid">
+            <div class="about-copy">
+                <span class="section-kicker">О компании</span>
+                <h2>Сервис, которому можно доверить внешний вид вашего бизнеса</h2>
+                <p>
+                    Мы оформили главную как современный промо-сайт: контрастный первый экран,
+                    блоки с преимуществами, карточки направлений и крупный призыв к действию.
+                    Такой подход делает страницу визуально ближе к nordtextile.ru, но без прямого копирования.
+                </p>
+                <p>
+                    Дизайн адаптирован под существующий ASP.NET MVC-проект и легко расширяется дополнительными
+                    блоками: отзывами, кейсами, таблицей тарифов или формой заявки.
+                </p>
+            </div>
+            <div class="about-highlights">
+                <article>
+                    <strong>12 лет</strong>
+                    <span>работы с корпоративным текстилем</span>
+                </article>
+                <article>
+                    <strong>6 направлений</strong>
+                    <span>от гостиниц до медицинских учреждений</span>
+                </article>
+                <article>
+                    <strong>Персональный менеджер</strong>
+                    <span>на связи по логистике, оплате и качеству обработки</span>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="section-shell contact-grid">
+            <div>
+                <span class="section-kicker">Связаться с нами</span>
+                <h2>Подготовим коммерческое предложение под ваш объект</h2>
+                <p>Если нужно, следующим шагом можно добавить полноценную форму обратной связи и отправку заявок в CRM.</p>
+            </div>
+            <div class="contact-card glass-card">
+                <div>
+                    <span>Телефон</span>
+                    <a href="tel:+78005553535">8 (800) 555-35-35</a>
+                </div>
+                <div>
+                    <span>Email</span>
+                    <a href="mailto:hello@uptest.local">hello@uptest.local</a>
+                </div>
+                <div>
+                    <span>График</span>
+                    <p>Пн–Вс, 08:00–20:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
