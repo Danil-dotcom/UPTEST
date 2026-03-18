@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UPTEST.Data;
+using UPTEST.Models;
 
 namespace UPTEST.Controllers
 {
@@ -15,16 +16,20 @@ namespace UPTEST.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Статистика для главной страницы
             ViewBag.OrdersCount = await _context.Orders.CountAsync();
             ViewBag.ActiveOrdersCount = await _context.Orders
-                .Where(o => o.Status == "В чистке" || o.Status == "Принят")
+                .Where(o => o.Status == OrderStatuses.Accepted || o.Status == OrderStatuses.InProgress)
                 .CountAsync();
             ViewBag.ReadyOrdersCount = await _context.Orders
-                .Where(o => o.Status == "Готов")
+                .Where(o => o.Status == OrderStatuses.Ready)
                 .CountAsync();
             ViewBag.CustomersCount = await _context.Customers.CountAsync();
 
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
             return View();
         }
     }

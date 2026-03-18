@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -56,11 +54,11 @@ namespace UPTEST.Models
         [Required(ErrorMessage = "Статус обязателен")]
         [StringLength(30)]
         [Display(Name = "Статус")]
-        public string Status { get; set; } = "Принят";
+        public string Status { get; set; } = OrderStatuses.Accepted;
 
         [StringLength(20)]
         [Display(Name = "Приоритет")]
-        public string Priority { get; set; } = "Обычный";
+        public string Priority { get; set; } = OrderPriorities.Normal;
 
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
@@ -69,7 +67,7 @@ namespace UPTEST.Models
 
         [Column(TypeName = "decimal(10, 2)")]
         [Display(Name = "Скидка")]
-        public decimal DiscountAmount { get; set; } = 0;
+        public decimal DiscountAmount { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(10, 2)")]
@@ -78,7 +76,7 @@ namespace UPTEST.Models
 
         [StringLength(20)]
         [Display(Name = "Статус оплаты")]
-        public string PaymentStatus { get; set; } = "Ожидание";
+        public string PaymentStatus { get; set; } = PaymentStatuses.Pending;
 
         [StringLength(30)]
         [Display(Name = "Метод оплаты")]
@@ -107,18 +105,16 @@ namespace UPTEST.Models
         [Display(Name = "Дата изменения")]
         public DateTime? LastModifiedAt { get; set; }
 
-        // Навигационные свойства
-        [ForeignKey("UserId")]
+        [ForeignKey(nameof(UserId))]
         public virtual User? User { get; set; }
 
-        [ForeignKey("CustomerId")]
+        [ForeignKey(nameof(CustomerId))]
         public virtual Customer? Customer { get; set; }
 
-        [ForeignKey("CategoryId")]
+        [ForeignKey(nameof(CategoryId))]
         public virtual ItemCategory? Category { get; set; }
 
-        [ForeignKey("LastModifiedBy")]
-        [NotMapped]
+        [ForeignKey(nameof(LastModifiedBy))]
         public virtual User? ModifiedBy { get; set; }
 
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }

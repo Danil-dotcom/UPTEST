@@ -1,6 +1,37 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+@{
+    ViewData["Title"] = "О проекте";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<section class="py-4">
+    <h1>@ViewData["Title"]</h1>
+    <p class="lead">UPTEST — демонстрационный ASP.NET MVC-проект для управления заказами прачечной и химчистки.</p>
+
+    <div class="row g-4 mt-1">
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h4">Что уже есть</h2>
+                    <ul class="mb-0">
+                        <li>подключение к базе данных LocalDB через Entity Framework Core;</li>
+                        <li>CRUD-экраны для заказов, клиентов, ролей и услуг;</li>
+                        <li>главная страница с современным промо-оформлением;</li>
+                        <li>валидация данных на уровне моделей и форм.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="h4">Как развивать дальше</h2>
+                    <ul class="mb-0">
+                        <li>добавить авторизацию и разграничение ролей;</li>
+                        <li>вынести аналитику по заказам на отдельный dashboard;</li>
+                        <li>подключить уведомления клиентам и сотрудникам;</li>
+                        <li>автоматизировать расчёт стоимости по услугам.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
