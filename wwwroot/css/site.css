@@ -483,13 +483,18 @@ img {
   gap: 1rem;
 }
 
-.contact-card a {
+.contact-card a,
+.contact-value {
   display: block;
   margin-top: 0.35rem;
   color: var(--text);
   font-size: 1.15rem;
   font-weight: 700;
   text-decoration: none;
+}
+
+.contact-value {
+  margin-bottom: 0;
 }
 
 @media (max-width: 1199.98px) {
