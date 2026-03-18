@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,14 +15,20 @@ namespace UPTEST.Controllers
             _context = context;
         }
 
-        // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Orders.Include(o => o.Category).Include(o => o.Customer).Include(o => o.ModifiedBy).Include(o => o.User);
-            return View(await applicationDbContext.ToListAsync());
+            var orders = await _context.Orders
+                .AsNoTracking()
+                .Include(o => o.Category)
+                .Include(o => o.Customer)
+                .Include(o => o.ModifiedBy)
+                .Include(o => o.User)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+
+            return View(orders);
         }
 
-        // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,50 +37,50 @@ namespace UPTEST.Controllers
             }
 
             var order = await _context.Orders
+                .AsNoTracking()
                 .Include(o => o.Category)
                 .Include(o => o.Customer)
                 .Include(o => o.ModifiedBy)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
 
-            return View(order);
+            return order == null ? NotFound() : View(order);
         }
 
-        // GET: Orders/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.ItemCategories, "CategoryId", "CategoryName");
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "FullName");
-            ViewData["LastModifiedBy"] = new SelectList(_context.Users, "UserId", "Email");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email");
-            return View();
+            await PopulateSelectionsAsync();
+            return View(new Order
+            {
+                CreatedAt = DateTime.Now,
+                Status = OrderStatuses.Accepted,
+                Priority = OrderPriorities.Normal,
+                PaymentStatus = PaymentStatuses.Pending
+            });
         }
 
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderId,OrderNumber,UserId,CustomerId,CustomerName,CustomerPhone,CategoryId,ItemDescription,StainType,Quantity,Status,Priority,TotalPrice,DiscountAmount,FinalPrice,PaymentStatus,PaymentMethod,CreatedAt,PickupDate,CompletedAt,Notes,LastModifiedBy,LastModifiedAt")] Order order)
         {
-            if (ModelState.IsValid)
+            NormalizeOrder(order, isNewOrder: true);
+
+            if (await HasDuplicateOrderNumberAsync(order.OrderNumber))
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(nameof(Order.OrderNumber), "Заказ с таким номером уже существует.");
             }
-            ViewData["CategoryId"] = new SelectList(_context.ItemCategories, "CategoryId", "CategoryName", order.CategoryId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "FullName", order.CustomerId);
-            ViewData["LastModifiedBy"] = new SelectList(_context.Users, "UserId", "Email", order.LastModifiedBy);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", order.UserId);
-            return View(order);
+
+            if (!ModelState.IsValid)
+            {
+                await PopulateSelectionsAsync(order);
+                return View(order);
+            }
+
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,16 +93,11 @@ namespace UPTEST.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.ItemCategories, "CategoryId", "CategoryName", order.CategoryId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "FullName", order.CustomerId);
-            ViewData["LastModifiedBy"] = new SelectList(_context.Users, "UserId", "Email", order.LastModifiedBy);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", order.UserId);
+
+            await PopulateSelectionsAsync(order);
             return View(order);
         }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OrderId,OrderNumber,UserId,CustomerId,CustomerName,CustomerPhone,CategoryId,ItemDescription,StainType,Quantity,Status,Priority,TotalPrice,DiscountAmount,FinalPrice,PaymentStatus,PaymentMethod,CreatedAt,PickupDate,CompletedAt,Notes,LastModifiedBy,LastModifiedAt")] Order order)
@@ -110,34 +107,37 @@ namespace UPTEST.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            NormalizeOrder(order, isNewOrder: false);
+
+            if (await HasDuplicateOrderNumberAsync(order.OrderNumber, order.OrderId))
             {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(nameof(Order.OrderNumber), "Заказ с таким номером уже существует.");
             }
-            ViewData["CategoryId"] = new SelectList(_context.ItemCategories, "CategoryId", "CategoryName", order.CategoryId);
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "FullName", order.CustomerId);
-            ViewData["LastModifiedBy"] = new SelectList(_context.Users, "UserId", "Email", order.LastModifiedBy);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", order.UserId);
-            return View(order);
+
+            if (!ModelState.IsValid)
+            {
+                await PopulateSelectionsAsync(order);
+                return View(order);
+            }
+
+            try
+            {
+                _context.Update(order);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(order.OrderId))
+                {
+                    return NotFound();
+                }
+
+                throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,20 +146,16 @@ namespace UPTEST.Controllers
             }
 
             var order = await _context.Orders
+                .AsNoTracking()
                 .Include(o => o.Category)
                 .Include(o => o.Customer)
                 .Include(o => o.ModifiedBy)
                 .Include(o => o.User)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
 
-            return View(order);
+            return order == null ? NotFound() : View(order);
         }
 
-        // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -168,10 +164,111 @@ namespace UPTEST.Controllers
             if (order != null)
             {
                 _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task PopulateSelectionsAsync(Order? order = null)
+        {
+            ViewData["CategoryId"] = new SelectList(
+                await _context.ItemCategories.AsNoTracking().OrderBy(c => c.CategoryName).ToListAsync(),
+                "CategoryId",
+                "CategoryName",
+                order?.CategoryId);
+
+            ViewData["CustomerId"] = new SelectList(
+                await _context.Customers.AsNoTracking().OrderBy(c => c.FullName).ToListAsync(),
+                "CustomerId",
+                "FullName",
+                order?.CustomerId);
+
+            ViewData["LastModifiedBy"] = new SelectList(
+                await _context.Users.AsNoTracking().OrderBy(u => u.FullName).ToListAsync(),
+                "UserId",
+                "FullName",
+                order?.LastModifiedBy);
+
+            ViewData["UserId"] = new SelectList(
+                await _context.Users.AsNoTracking().OrderBy(u => u.FullName).ToListAsync(),
+                "UserId",
+                "FullName",
+                order?.UserId);
+
+            ViewData["StatusOptions"] = new SelectList(OrderStatuses.All, order?.Status);
+            ViewData["PriorityOptions"] = new SelectList(OrderPriorities.All, order?.Priority);
+            ViewData["PaymentStatusOptions"] = new SelectList(PaymentStatuses.All, order?.PaymentStatus);
+        }
+
+        private void NormalizeOrder(Order order, bool isNewOrder)
+        {
+            order.OrderNumber = order.OrderNumber?.Trim();
+            order.CustomerName = order.CustomerName?.Trim();
+            order.CustomerPhone = order.CustomerPhone?.Trim();
+            order.ItemDescription = order.ItemDescription?.Trim();
+            order.StainType = order.StainType?.Trim();
+            order.PaymentMethod = string.IsNullOrWhiteSpace(order.PaymentMethod) ? null : order.PaymentMethod.Trim();
+            order.Notes = string.IsNullOrWhiteSpace(order.Notes) ? null : order.Notes.Trim();
+
+            if (string.IsNullOrWhiteSpace(order.Status) || !OrderStatuses.IsValid(order.Status))
+            {
+                ModelState.AddModelError(nameof(Order.Status), "Выберите корректный статус заказа.");
+            }
+
+            if (!OrderPriorities.All.Contains(order.Priority))
+            {
+                ModelState.AddModelError(nameof(Order.Priority), "Выберите корректный приоритет заказа.");
+            }
+
+            if (!PaymentStatuses.All.Contains(order.PaymentStatus))
+            {
+                ModelState.AddModelError(nameof(Order.PaymentStatus), "Выберите корректный статус оплаты.");
+            }
+
+            if (order.DiscountAmount < 0)
+            {
+                ModelState.AddModelError(nameof(Order.DiscountAmount), "Скидка не может быть отрицательной.");
+            }
+
+            if (order.FinalPrice < 0 || order.TotalPrice < 0)
+            {
+                ModelState.AddModelError(nameof(Order.FinalPrice), "Сумма заказа должна быть неотрицательной.");
+            }
+
+            if (order.FinalPrice > order.TotalPrice && order.DiscountAmount > 0)
+            {
+                ModelState.AddModelError(nameof(Order.FinalPrice), "Итоговая сумма не может превышать общую при наличии скидки.");
+            }
+
+            if (order.PickupDate.HasValue && order.PickupDate < order.CreatedAt)
+            {
+                ModelState.AddModelError(nameof(Order.PickupDate), "Дата выдачи не может быть раньше даты создания.");
+            }
+
+            if (order.CompletedAt.HasValue && order.CompletedAt < order.CreatedAt)
+            {
+                ModelState.AddModelError(nameof(Order.CompletedAt), "Дата завершения не может быть раньше даты создания.");
+            }
+
+            if (isNewOrder && order.CreatedAt == default)
+            {
+                order.CreatedAt = DateTime.Now;
+            }
+
+            order.LastModifiedAt = DateTime.Now;
+        }
+
+        private Task<bool> HasDuplicateOrderNumberAsync(string? orderNumber, int? currentOrderId = null)
+        {
+            if (string.IsNullOrWhiteSpace(orderNumber))
+            {
+                return Task.FromResult(false);
+            }
+
+            return _context.Orders.AnyAsync(o =>
+                o.OrderNumber == orderNumber &&
+                (!currentOrderId.HasValue || o.OrderId != currentOrderId.Value));
         }
 
         private bool OrderExists(int id)
