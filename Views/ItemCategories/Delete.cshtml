@@ -1,0 +1,35 @@
+@model UPTEST.Models.ItemCategory
+
+@{
+    ViewData["Title"] = "Удаление категории";
+}
+
+<h1>Удаление категории</h1>
+
+<h3>Вы уверены, что хотите удалить эту категорию?</h3>
+<div>
+    <h4>Категория изделия</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CategoryName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+        <dd class="col-sm-9">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "—")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.BasePriceMultiplier)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.BasePriceMultiplier)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RequiresSpecialCare)</dt>
+        <dd class="col-sm-9">@(Model.RequiresSpecialCare ? "Да" : "Нет")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsActive)</dt>
+        <dd class="col-sm-9">@(Model.IsActive ? "Да" : "Нет")</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="CategoryId" />
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
+    </form>
+</div>

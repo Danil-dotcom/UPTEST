@@ -1,0 +1,45 @@
+@model IEnumerable<UPTEST.Models.ItemCategory>
+
+@{
+    ViewData["Title"] = "Категории";
+}
+
+<h1>Категории</h1>
+
+@if (TempData["ErrorMessage"] is string errorMessage)
+{
+    <div class="alert alert-danger" role="alert">@errorMessage</div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Добавить категорию</a>
+</p>
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.CategoryName)</th>
+            <th>@Html.DisplayNameFor(model => model.Description)</th>
+            <th>@Html.DisplayNameFor(model => model.BasePriceMultiplier)</th>
+            <th>@Html.DisplayNameFor(model => model.RequiresSpecialCare)</th>
+            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                <td>@(!string.IsNullOrWhiteSpace(item.Description) ? item.Description : "—")</td>
+                <td>@Html.DisplayFor(modelItem => item.BasePriceMultiplier)</td>
+                <td>@(item.RequiresSpecialCare ? "Да" : "Нет")</td>
+                <td>@(item.IsActive ? "Да" : "Нет")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Изменить</a> |
+                    <a asp-action="Details" asp-route-id="@item.CategoryId">Подробнее</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CategoryId">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
