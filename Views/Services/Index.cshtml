@@ -1,59 +1,50 @@
-﻿@model IEnumerable<UPTEST.Models.Service>
+@model IEnumerable<UPTEST.Models.Service>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Сервисы";
 }
 
-<h1>Index</h1>
+<section class="entity-page">
+    <div class="entity-page__header">
+        <div>
+            <p class="entity-page__eyebrow">Каталог</p>
+            <h1>Сервисы</h1>
+            <p class="entity-page__description">Поддерживайте актуальный список сервисов, базовые тарифы и статус доступности.</p>
+        </div>
+        <a class="btn btn-dark entity-page__cta" asp-action="Create">СОЗДАТЬ СЕРВИС</a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BasePrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DurationHours)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ServiceName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BasePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DurationHours)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ServiceId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="table-responsive entity-table-wrap">
+        <table class="table entity-table align-middle">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.ServiceName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
+                    <th>@Html.DisplayNameFor(model => model.BasePrice)</th>
+                    <th>@Html.DisplayNameFor(model => model.DurationHours)</th>
+                    <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                    <th class="text-end">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.ServiceName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BasePrice)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DurationHours)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                    <td class="text-end">
+                        <div class="entity-table__actions">
+                            <a asp-action="Edit" asp-route-id="@item.ServiceId">Изменить</a>
+                            <a asp-action="Details" asp-route-id="@item.ServiceId">Подробнее</a>
+                            <a asp-action="Delete" asp-route-id="@item.ServiceId">Удалить</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</section>
